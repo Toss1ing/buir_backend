@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Entity
@@ -24,6 +25,7 @@ public class Role {
     private String roleName;
 
     @JsonIgnore
+    @Transient
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 

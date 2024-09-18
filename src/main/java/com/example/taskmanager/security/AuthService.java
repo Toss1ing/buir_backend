@@ -1,5 +1,8 @@
 package com.example.taskmanager.security;
 
+import static com.example.taskmanager.utilities.Constants.NOT_FOUND_MSG;
+import static com.example.taskmanager.utilities.Constants.OBJECT_EXIST_MSG;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -36,14 +39,15 @@ public class AuthService {
         public AuthResponse registerUser(@Valid final RegisterRequest request)
                         throws NotFoundException, ObjectExistException {
 
-                Role role = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new NotFoundException("NotFound"));
+                Role role = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new NotFoundException(
+                                NOT_FOUND_MSG));
 
                 User user = new User(request.getLogin(), request.getEmail(),
                                 passwordEncoder.encode(request.getPassword()), request.getPhoneNumber(),
                                 Arrays.asList(role), new ArrayList<>());
 
                 if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-                        throw new ObjectExistException("Message");
+                        throw new ObjectExistException(OBJECT_EXIST_MSG);
                 }
 
                 userRepository.save(user);
@@ -63,7 +67,7 @@ public class AuthService {
                                                 request.getPassword()));
 
                 User user = userRepository.findByEmail(request.getEmail())
-                                .orElseThrow(() -> new NotFoundException("Message"));
+                                .orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
                 var jwtToken = jwtService.generateToken(user);
 

@@ -19,6 +19,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Entity
@@ -38,6 +39,7 @@ public class User implements UserDetails {
 
     private String phoneNumber;
 
+    @Transient
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role_tbl", joinColumns = {
             @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -46,6 +48,7 @@ public class User implements UserDetails {
     })
     private List<Role> roles;
 
+    @Transient
     @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST,
             CascadeType.MERGE }, fetch = FetchType.LAZY)
     private List<Task> tasks;

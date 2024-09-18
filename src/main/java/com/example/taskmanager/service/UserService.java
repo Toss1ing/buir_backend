@@ -1,5 +1,7 @@
 package com.example.taskmanager.service;
 
+import static com.example.taskmanager.utilities.Constants.NOT_FOUND_MSG;
+
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -27,9 +29,9 @@ public class UserService {
     private final ModelMapper modelMapper;
 
     public UserDto addAdmin(final Long id) throws NotFoundException {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Message"));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
-        Role role = roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> new NotFoundException("Message"));
+        Role role = roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
         user.getRoles().add(role);
 
@@ -43,21 +45,21 @@ public class UserService {
         List<User> users = userRepository.findAll();
 
         if (users.isEmpty()) {
-            throw new NotFoundException("Message");
+            throw new NotFoundException(NOT_FOUND_MSG);
         }
 
         return users.stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
     }
 
     public UserDto getUserById(final Long id) throws NotFoundException {
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Message"));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
         return modelMapper.map(user, UserDto.class);
     }
 
     public UserDto deleteUserById(final Long id) throws NotFoundException {
 
-        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Message"));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
         userRepository.delete(user);
 
@@ -66,9 +68,9 @@ public class UserService {
 
     @Transactional
     public UserDto addTaskInUserById(Long userId, Long taskId) throws NotFoundException {
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("Message"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new NotFoundException("Message"));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
         task.setUser(user);
 

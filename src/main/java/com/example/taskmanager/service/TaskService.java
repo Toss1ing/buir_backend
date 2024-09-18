@@ -1,5 +1,8 @@
 package com.example.taskmanager.service;
 
+import static com.example.taskmanager.utilities.Constants.NOT_FOUND_MSG;
+import static com.example.taskmanager.utilities.Constants.OBJECT_EXIST_MSG;
+
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -30,7 +33,7 @@ public class TaskService {
         Task task = new Task(taskDto.getTaskName(), taskDto.getDescription(), taskDto.getEndDate());
 
         if (taskRepository.findByName(taskDto.getTaskName()).isPresent()) {
-            throw new ObjectExistException("Message");
+            throw new ObjectExistException(OBJECT_EXIST_MSG);
         }
 
         taskRepository.save(task);
@@ -42,12 +45,12 @@ public class TaskService {
     @Transactional
     public List<TaskDto> getAllTaskInUser(final Long userId) throws BadRequestException, NotFoundException {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("message"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
         List<Task> tasks = user.getTasks();
 
         if (tasks.isEmpty()) {
-            throw new BadRequestException("Message");
+            throw new BadRequestException(NOT_FOUND_MSG);
         }
 
         return tasks.stream().map(task -> modelMapper.map(task, TaskDto.class)).toList();
@@ -55,7 +58,7 @@ public class TaskService {
     }
 
     public TaskDto deleteTaskById(final Long id) throws NotFoundException {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("message"));
+        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
         taskRepository.delete(task);
 
@@ -63,7 +66,7 @@ public class TaskService {
     }
 
     public TaskDto updateComplete(final Long id) throws NotFoundException {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Message"));
+        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
         task.setComplete(!task.isComplete());
 
@@ -73,7 +76,7 @@ public class TaskService {
     }
 
     public TaskDto updateTitle(final Long id, @Valid final TaskDto task) throws NotFoundException {
-        Task taskFromRepository = taskRepository.findById(id).orElseThrow(() -> new NotFoundException("Message"));
+        Task taskFromRepository = taskRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 
         taskFromRepository.setTaskName(task.getTaskName());
 
