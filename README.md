@@ -39,7 +39,7 @@
 
 Анализ кода проекта доступен на платформе SonarCloud, которая предоставляет отчеты по качеству кода, тестам и другим метрикам.
 
-[Отчет о проекте на SonarCloud]([https://sonarcloud.io/dashboard?id=ваш-проект](https://sonarcloud.io/summary/overall?id=Toss1ing_buir_backend))
+[Отчет о проекте на SonarCloud]([https://sonarcloud.io/summary/overall?id=Toss1ing_buir_backend])
 
 ## Технологии
 
