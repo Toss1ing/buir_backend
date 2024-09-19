@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,7 +31,7 @@ public class TaskController {
 
     @PostMapping(path = "user/add/task")
     public ResponseEntity<TaskDto> addTask(@RequestBody @Valid final TaskDto taskDto) throws ObjectExistException {
-        return new ResponseEntity<>(taskService.addTask(taskDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(taskService.addTask(taskDto), HttpStatus.ACCEPTED);
     }
 
     @GetMapping(path = "user/get/task/{userId}")
@@ -52,12 +51,6 @@ public class TaskController {
     public ResponseEntity<TaskDto> updateComplete(@PathVariable final Long id)
             throws NotFoundException {
         return new ResponseEntity<>(taskService.updateComplete(id), HttpStatus.ACCEPTED);
-    }
-
-    @PatchMapping(path = "user/task/{id}/title")
-    public ResponseEntity<TaskDto> updateTitle(@PathVariable final Long id, @RequestBody @Valid final TaskDto task)
-            throws NotFoundException {
-        return new ResponseEntity<>(taskService.updateTitle(id, task), HttpStatus.OK);
     }
 
 }

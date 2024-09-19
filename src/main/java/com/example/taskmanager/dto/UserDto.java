@@ -1,5 +1,6 @@
 package com.example.taskmanager.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,6 +17,7 @@ public class UserDto {
     @NotBlank(message = "login must not be empty")
     private String login;
     private String email;
-    private List<TaskDto> tasks;
+    private List<TaskDto> tasks = new ArrayList<>();
+    private List<RoleDto> roles = new ArrayList<>();
 
 }

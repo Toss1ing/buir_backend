@@ -30,9 +30,9 @@ public class TaskService {
     private final ModelMapper modelMapper;
 
     public TaskDto addTask(@Valid final TaskDto taskDto) throws ObjectExistException {
-        Task task = new Task(taskDto.getTaskName(), taskDto.getDescription(), taskDto.getEndDate());
+        Task task = new Task(taskDto.getName(), taskDto.getDescription(), taskDto.getEndDate());
 
-        if (taskRepository.findByName(taskDto.getTaskName()).isPresent()) {
+        if (taskRepository.findByName(taskDto.getName()).isPresent()) {
             throw new ObjectExistException(OBJECT_EXIST_MSG);
         }
 
@@ -73,16 +73,6 @@ public class TaskService {
         taskRepository.save(task);
 
         return modelMapper.map(task, TaskDto.class);
-    }
-
-    public TaskDto updateTitle(final Long id, @Valid final TaskDto task) throws NotFoundException {
-        Task taskFromRepository = taskRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
-
-        taskFromRepository.setTaskName(task.getTaskName());
-
-        taskRepository.save(taskFromRepository);
-
-        return modelMapper.map(taskFromRepository, TaskDto.class);
     }
 
 }

@@ -13,14 +13,14 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "task_tbl")
+@Table(name = "task")
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String taskName;
+    private String name;
 
     private String description;
 
@@ -35,7 +35,7 @@ public class Task {
     private User user;
 
     public Task() {
-        this.taskName = "";
+        this.name = "";
         this.description = "";
         this.complete = false;
         this.createDate = Instant.now();
@@ -44,7 +44,7 @@ public class Task {
     }
 
     public Task(final String taskName, final String description, final Instant endDate) {
-        this.taskName = taskName;
+        this.name = taskName;
         this.description = description;
         this.complete = false;
         this.createDate = Instant.now();

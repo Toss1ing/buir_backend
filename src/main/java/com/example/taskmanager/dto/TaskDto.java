@@ -15,7 +15,7 @@ public class TaskDto {
     private Long id;
 
     @NotBlank(message = "name of task must not be empty")
-    private String taskName;
+    private String name;
 
     @NotBlank(message = "description must not be empty")
     @Size(min = 10, max = 256, message = "A size of description must be between 10 and 256 character")

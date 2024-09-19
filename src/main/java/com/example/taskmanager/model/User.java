@@ -19,12 +19,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "user_tbl")
+@Table(name = "app_user")
 public class User implements UserDetails {
 
     @Id
@@ -39,18 +38,16 @@ public class User implements UserDetails {
 
     private String phoneNumber;
 
-    @Transient
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role_tbl", joinColumns = {
+    @JoinTable(name = "user_role", joinColumns = {
             @JoinColumn(name = "user_id", referencedColumnName = "id")
     }, inverseJoinColumns = {
             @JoinColumn(name = "role_id", referencedColumnName = "id")
     })
     private List<Role> roles;
 
-    @Transient
     @OneToMany(mappedBy = "user", cascade = { CascadeType.PERSIST,
-            CascadeType.MERGE }, fetch = FetchType.LAZY)
+            CascadeType.MERGE }, fetch = FetchType.EAGER)
     private List<Task> tasks;
 
     public User() {
@@ -72,6 +69,14 @@ public class User implements UserDetails {
         this.tasks = tasks;
     }
 
+    public final void removeRole(final Long roleId) {
+        Role role = this.roles.stream().filter(t -> t.getId() == roleId).findFirst().orElse(null);
+        if (role != null) {
+            this.roles.remove(role);
+            role.getUsers().remove(this);
+        }
+    }
+
     public void removeItem(final Long itemId) {
         Task task = this.tasks.stream().filter(t -> t.getId() == itemId).findFirst().orElse(null);
         if (task != null) {
@@ -82,7 +87,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getRoleName())).toList();
+        return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).toList();
     }
 
     @Override

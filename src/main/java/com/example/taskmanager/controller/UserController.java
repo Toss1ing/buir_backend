@@ -29,6 +29,11 @@ public class UserController {
         return new ResponseEntity<>(userService.addAdmin(id), HttpStatus.ACCEPTED);
     }
 
+    @PostMapping(path = "admin/remove/{id}")
+    public ResponseEntity<UserDto> removeAdmin(final @PathVariable Long id) throws NotFoundException {
+        return new ResponseEntity<>(userService.removeAdmin(id), HttpStatus.ACCEPTED);
+    }
+
     @GetMapping(path = "admin/all")
     public ResponseEntity<List<UserDto>> getAllUsers() throws NotFoundException {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
@@ -45,9 +50,9 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "user/delete/{id}")
+    @DeleteMapping(path = "admin/delete/{id}")
     public ResponseEntity<UserDto> deleteUserById(@PathVariable final Long id) throws NotFoundException {
-        return new ResponseEntity<>(userService.deleteUserById(id), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(userService.deleteUserById(id), HttpStatus.OK);
     }
 
 }

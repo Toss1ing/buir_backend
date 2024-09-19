@@ -10,31 +10,29 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "role_tbl")
+@Table(name = "role")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String roleName;
+    private String name;
 
     @JsonIgnore
-    @Transient
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
 
     public Role() {
-        this.roleName = "";
+        this.name = "";
     }
 
     public Role(final String roleName, final List<User> users) {
-        this.roleName = roleName;
+        this.name = roleName;
         this.users = users;
     }
 }

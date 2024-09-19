@@ -83,4 +83,16 @@ public class UserService {
 
     }
 
+    public UserDto removeAdmin(final Long id) throws NotFoundException {
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
+
+        Role role = roleRepository.findByName("ROLE_ADMIN").orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
+
+        user.removeRole(role.getId());
+
+        userRepository.save(user);
+
+        return modelMapper.map(user, UserDto.class);
+    }
+
 }
