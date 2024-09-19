@@ -55,4 +55,10 @@ public class UserController {
         return new ResponseEntity<>(userService.deleteUserById(id), HttpStatus.OK);
     }
 
+    @DeleteMapping(path = "user/delete/task/id/{userId}/{taskId}")
+    public ResponseEntity<UserDto> deleteTaskInUserById(@PathVariable final Long userId,
+            @PathVariable final Long taskId) throws NotFoundException {
+        return new ResponseEntity<>(userService.deleteTaskInUserById(userId, taskId), HttpStatus.OK);
+    }
+
 }

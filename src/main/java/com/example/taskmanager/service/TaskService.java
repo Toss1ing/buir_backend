@@ -57,15 +57,6 @@ public class TaskService {
 
     }
 
-    @Transactional
-    public TaskDto deleteTaskById(final Long id) throws NotFoundException {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
-
-        taskRepository.deleteById(id);
-
-        return modelMapper.map(task, TaskDto.class);
-    }
-
     public TaskDto updateComplete(final Long id) throws NotFoundException {
         Task task = taskRepository.findById(id).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
 

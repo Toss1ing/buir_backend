@@ -95,4 +95,19 @@ public class UserService {
         return modelMapper.map(user, UserDto.class);
     }
 
+    @Transactional
+    public UserDto deleteTaskInUserById(final Long userId, final Long taskId) throws NotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
+
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new NotFoundException(NOT_FOUND_MSG));
+
+        user.getTasks().remove(task);
+
+        taskRepository.delete(task);
+
+        userRepository.save(user);
+
+        return modelMapper.map(user, UserDto.class);
+    }
+
 }
