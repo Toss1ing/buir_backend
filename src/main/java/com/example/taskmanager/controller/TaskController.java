@@ -53,4 +53,10 @@ public class TaskController {
         return new ResponseEntity<>(taskService.updateComplete(id), HttpStatus.ACCEPTED);
     }
 
+    @PostMapping(path = "user/task/edit/{id}")
+    public ResponseEntity<TaskDto> updateTask(@PathVariable final Long id, final @RequestBody TaskDto taskDto)
+            throws NotFoundException {
+        return new ResponseEntity<>(taskService.updateTask(id, taskDto), HttpStatus.ACCEPTED);
+    }
+
 }
